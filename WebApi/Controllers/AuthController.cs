@@ -9,8 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers
 {
     [Route("auth")]
-    [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : ApiController
     {
         private readonly IMediator mediator;
         private readonly IMapper mapper;
@@ -30,7 +29,7 @@ namespace WebApi.Controllers
 
             return result.MatchFirst(
                     authResult => Ok(this.mapper.Map<AuthResponse>(authResult)),
-                    error => Problem(statusCode: StatusCodes.Status409Conflict, title: error.Description));
+                    error => Problem(result.Errors));
 
         }
 
@@ -49,7 +48,7 @@ namespace WebApi.Controllers
 
             return result.MatchFirst(
                    authResult => Ok(this.mapper.Map<AuthResponse>(authResult)),
-                   error => Problem(statusCode: StatusCodes.Status409Conflict, title: error.Description));
+                   error => Problem(result.Errors));
         }
     }
 }
